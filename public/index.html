@@ -246,6 +246,14 @@ let DASH = { conversations: [], docs: [], conv: null };
 
 async function loadDashboard(tab) {
   ME = await api('GET', '/me');
+  if (!document.getElementById('supportai-widget-script')) {
+    const s = document.createElement('script');
+    s.id = 'supportai-widget-script';
+    s.src = '/widget.js';
+    s.setAttribute('data-key', ME.organization.publicKey);
+    s.setAttribute('data-label', 'Try the chat');
+    document.body.appendChild(s);
+  }
   if (!tab) tab = params.tab || 'conversations';
   params = { tab };
   if (tab === 'conversations') DASH.conversations = (await api('GET', '/conversations')).conversations;
@@ -425,6 +433,5 @@ async function render() {
 }
 render();
 </script>
-<script src="/widget.js" data-key="demo" data-label="Try the chat"></script>
 </body>
 </html>
